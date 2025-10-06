@@ -1,13 +1,51 @@
-import React, { useState } from 'react'
-import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity, Alert} from 'react-native'
+import React, { useState } from 'react';
+import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity, Alert} from 'react-native';
+import apiClient from '../api/client';
 
 const LoginScreen = ({ navigation }: { navigation: any }) => {
     
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false);
 
-    const handleLogin = () => {
-        Alert.alert('Login Info', `Email: ${email}, Password: ${password}`);
+    const handleLogin = async () => {
+        // Mem-validasi input
+        if (!email || !password) {
+            Alert.alert('Error', 'Email dan Password harus diisi.');
+            return;
+        }
+
+        // Memulai loading
+        setLoading(true);
+        try {
+            // Mengirim request ke backend server
+            const response = await apiClient.post('auth/login', {
+                email: email,
+                password: password,
+            });
+
+            // Jika sukses, API akan mengirim token
+            const token = response.data.token;
+            console.log('Login berhasil, token: ', token);
+
+            // TODO : simpan token ke asyncstorage
+
+            // Mengirim notifikasi pada layar dan navigasi ke dasboard screen
+            Alert.alert('Sukses', 'Anda telah berhasil login!');
+            navigation.navigate('Dashboard');
+
+        } catch(error: any) {
+            // Menampilkan pesan error dari server
+            const errorMessage = error.response?.data?.message || 'Terjadi kesalahan pada jaringan';
+            Alert.alert('Login Gagal', errorMessage);
+            console.error(error);
+
+        } finally {
+            // Loading selesai, state Loading diubah menjadi False
+            setLoading(false);
+        }
+
+
     }
 
     const handleNavigateToRegister = () => {
@@ -35,7 +73,11 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
                 secureTextEntry
             />
 
-            <Button title = 'Login' onPress={handleLogin}/>
+            <Button 
+                title = {loading ? 'Loading...' : 'Login'} 
+                onPress = {handleLogin}
+                disabled = {loading}
+            />
 
             <TouchableOpacity onPress={handleNavigateToRegister}>
                 <Text style = {styles.linkText}>

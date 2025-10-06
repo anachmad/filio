@@ -74,7 +74,7 @@ const loginUser = async (req, res) => {
         });
 
         // Jika user tidak ditemukan atau password tidak cocok, kirim error message
-        if (!user || !bcrypt.compare(password, user.password)){
+        if (!user || !bcrypt.compareSync(password, user.password)){
             return res.status(400).json({
                 message : 'Email atau password salah'
             });
