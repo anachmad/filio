@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity, Alert} from 'react-native';
 import apiClient from '../api/client';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LoginScreen = ({ navigation }: { navigation: any }) => {
     
@@ -8,6 +9,7 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
 
+    // Fungsi untuk handle login
     const handleLogin = async () => {
         // Mem-validasi input
         if (!email || !password) {
@@ -24,12 +26,12 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
                 password: password,
             });
 
-            // Jika sukses, API akan mengirim token
+            // Mengambil token dari response API
             const token = response.data.token;
-            console.log('Login berhasil, token: ', token);
-
-            // TODO : simpan token ke asyncstorage
-
+            
+            // Menyimpan token ke asyncstorage
+            await AsyncStorage.setItem('authToken', token);
+            
             // Mengirim notifikasi pada layar dan navigasi ke dasboard screen
             Alert.alert('Sukses', 'Anda telah berhasil login!');
             navigation.navigate('Dashboard');
@@ -41,13 +43,13 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
             console.error(error);
 
         } finally {
-            // Loading selesai, state Loading diubah menjadi False
+            // Mengubah state Loading menjadi False setelah loading selesai
             setLoading(false);
         }
 
-
     }
 
+    // Fungsi untuk berpindah screen ke Register Screen
     const handleNavigateToRegister = () => {
         navigation.navigate('Register');
     }
