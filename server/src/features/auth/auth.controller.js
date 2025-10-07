@@ -32,9 +32,17 @@ const registerUser = async (req, res) => {
             },
         });
 
+        // Membuat auth token
+        const token = jwt.sign(
+            { userId: newUser.id },
+            process.env.JWT_SECRET,
+            { expiresIn: '24h'},
+        )
+
         // Kirim respon sukses
         res.status(201).json({
             message: 'Registrasi user sukses!',
+            token: token,
             user: {
                 id : newUser.id,
                 fullName: newUser.fullName,
