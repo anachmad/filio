@@ -1,10 +1,10 @@
-const prisma = require('../../lib/prisma');
-const bcrypt = require('bcryptjs');
-const {v7 : uuidv7} = require('uuid');
-const jwt = require('jsonwebtoken');
+import prisma from '../../lib/prisma.js';
+import bcrypt from 'bcryptjs';
+import { v7 as uuidv7 } from 'uuid';
+import jwt from 'jsonwebtoken';
 
 // Fungsi untuk handle registrasi user
-const registerUser = async (req, res) => {    
+export const registerUser = async (req, res) => {    
     try {
         // Ambil data dari req body
         const {fullName, email, password} = req.body;
@@ -62,7 +62,7 @@ const registerUser = async (req, res) => {
 };
 
 // Fungsi untuk handle login user
-const loginUser = async (req, res) => {
+export const loginUser = async (req, res) => {
     try {
         // Ambil data dari request body
         const {email, password} = req.body;
@@ -109,7 +109,7 @@ const loginUser = async (req, res) => {
 };
 
 // Fungsi untuk menampilkan profil user setelah login
-const getMyProfile = async (req, res) => {
+export const getMyProfile = async (req, res) => {
     try{
         // Ambil userId dari middleware (setelah verifikasi)
         const userId = req.user.userId;
@@ -139,10 +139,4 @@ const getMyProfile = async (req, res) => {
             message: 'Internal Server Error'
         });
     }
-};
-
-module.exports = {
-    registerUser,
-    loginUser,
-    getMyProfile,
 };

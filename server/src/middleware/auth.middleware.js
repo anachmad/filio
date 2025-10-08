@@ -1,4 +1,4 @@
-const jwt = require('jsonwebtoken');
+import jwt from 'jsonwebtoken';
 
 const authMiddleware = (req, res, next) => {
     // Ambil token dari header auth
@@ -23,11 +23,11 @@ const authMiddleware = (req, res, next) => {
         next();
     } catch(error) {
         // Jika token tidak valid, kirim error
-        req.status(403).json({
+        res.status(403).json({
             message : 'Token tidak valid atau sudah kadaluarsa'
         });
     }
 
 };
 
-module.exports = authMiddleware;
+export default authMiddleware;

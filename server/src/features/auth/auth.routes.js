@@ -1,7 +1,8 @@
-const express = require('express');
+import express from 'express';
+import * as authController from './auth.controller.js';
+import authMiddleware from '../../middleware/auth.middleware.js';
+
 const router = express.Router();
-const authController = require('./auth.controller');
-const authMiddleware = require('../../middleware/auth.middleware');
 
 // Route untuk registrasi user
 // Method : POST, URL : /api/auth/register
@@ -14,4 +15,4 @@ router.post('/login', authController.loginUser);
 // Route untuk menampilkan profil
 router.get('/me', authMiddleware, authController.getMyProfile);
 
-module.exports = router;
+export default router;
