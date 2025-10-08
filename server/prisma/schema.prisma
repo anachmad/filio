@@ -23,8 +23,53 @@ model User {
   password  String
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
+  family    Family?   @relation(fields: [familyId], references: [id])
+  familyId  String?    
 
   @@map("users")
+}
+
+model Family {
+  id        String    @id
+  name      String
+  members   User[]
+  children  Child[]
+  createdAt DateTime  @default(now())
+
+  @@map("families")
+}
+
+model Child {
+  id          String    @id
+  name        String
+  dateOfBirth DateTime
+  family      Family    @relation(fields: [familyId], references: [id])
+  familyId    String
+  activities  Activity[]
+  createdAt   DateTime  @default(now())
+
+  @@map("children")
+}
+
+model Activity {
+  id            String    @id
+  title         String
+  description   String?
+  activityDate  DateTime  @default(now())
+  child         Child     @relation(fields: [childId], references: [id])
+  childId       String
+  fitrahTags    FitrahTag[]
+
+  @@map("activities")
+
+}
+
+model FitrahTag {
+  id          Int         @id @default(autoincrement())
+  name        String      @unique
+  activities  Activity[]
+
+  @@map("fitrah_tags")
 }
 
 
