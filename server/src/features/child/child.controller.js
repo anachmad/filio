@@ -1,5 +1,6 @@
 import prisma from "../../lib/prisma.js";
 
+// Fungsi membuat data anak baru
 export const createChild = async (req, res) => {
     const { name, dateOfBirth } = req.body;
     const userId = req.user.userId;
@@ -35,7 +36,7 @@ export const createChild = async (req, res) => {
 
         const newChild = await prisma.child.create({
             data: {
-                name,
+                name: name,
                 dateOfBirth: new Date(dateOfBirth),
                 familyId: family.id,
             },
@@ -50,6 +51,37 @@ export const createChild = async (req, res) => {
         console.error(error);
         res.status(500).json({
             message: 'Internal Server Error'
+        });
+    }
+};
+
+// Fungsi mendapatkan daftar anak dari user yang login
+export const getChildren = async (req, res) => {
+    const userId = req.user.userId;
+
+    try {
+        const user = await prisma.user.findUnique({
+            where: { id: userId },
+            include: {
+                family: {
+                    include: {
+                        children: true,
+                    },
+                },
+            },
+        });
+
+        if(!user.family) {
+            return res.status(200).json([]);
+        }
+
+        res.status(200).json(user.family.children);
+
+    } catch (error) {
+        console.error(error);
+
+        res.status(500).json({
+            message: "Internal Server Error"
         });
     }
 };
