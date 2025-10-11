@@ -7,6 +7,7 @@ import LoginScreen from './src/screens/LoginScreen';
 import RegisterScreen from './src/screens/RegisterScreen';
 import DashboardScreen from './src/screens/DashboardScreen';
 import AuthLoadingScreen from './src/screens/AuthLoadingScreen';
+import AddChildScreen from './src/screens/AddChildScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -61,8 +62,15 @@ export default function App() {
             ) : (
               // Menampilkan screen Dashboard jika token ada
               <>
-                <Stack.Screen name = "Dashboard"
+                <Stack.Screen 
+                  name = 'Dashboard'
                   component = { DashboardScreen }
+                />
+
+                <Stack.Screen
+                  name = 'AddChild'
+                  component = { AddChildScreen }
+                  options = {{ title : 'Tambah Profil Anak '}}
                 />
               </>
             )}
