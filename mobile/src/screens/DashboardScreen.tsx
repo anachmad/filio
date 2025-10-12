@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, Button, StyleSheet, Alert, FlatList, ActivityIndicator } from 'react-native'
+import { View, Text, Button, StyleSheet, Alert, FlatList, ActivityIndicator, TouchableOpacity } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import apiClient from '../api/client';
 import { useFocusEffect } from '@react-navigation/native';
@@ -68,8 +68,18 @@ const DashboardScreen = ({ navigation }: { navigation: any }) => {
                     <FlatList
                         data={children}
                         keyExtractor={(item) => item.id}
-                        renderItem={({ item }) => <Text style={ styles.childItem }>{ item.name }</Text>}
-                        ListHeaderComponent={ <Text style={ styles.title }>Anak Anda</Text> }
+                        renderItem={({ item }) => (
+                            <TouchableOpacity
+                                style = { styles.childItemContainer }
+                                onPress = {() => navigation.navigate('ChildDetail', {
+                                    childId: item.id,
+                                    childName: item.name,
+                                })}
+                            >
+                                <Text style = { styles.childItemText }>{ item.name }</Text>
+                            </TouchableOpacity>
+                        )}
+                        ListHeaderComponent={ <Text style={ styles.title }>Pilih profil Anak</Text> }
                     />
                 ) : (
                     <Text>Anda belum memiliki profil anak.</Text>
@@ -99,6 +109,15 @@ const styles = StyleSheet.create({
         fontSize: 22,
         fontWeight: 'bold',
         marginBottom: 16,
+    },
+    childItemContainer: {
+        backgroundColor: '#f0f0f0',
+        padding: 15,
+        borderRadius: 8,
+        marginBottom: 10,
+    },
+    childItemText: {
+        fontSize: 18,
     },
     childItem: {
         fontSize: 18,

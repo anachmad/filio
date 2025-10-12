@@ -8,6 +8,7 @@ import RegisterScreen from './src/screens/RegisterScreen';
 import DashboardScreen from './src/screens/DashboardScreen';
 import AuthLoadingScreen from './src/screens/AuthLoadingScreen';
 import AddChildScreen from './src/screens/AddChildScreen';
+import ChildDetailScreen from './src/screens/ChildDetailScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -71,6 +72,12 @@ export default function App() {
                   name = 'AddChild'
                   component = { AddChildScreen }
                   options = {{ title : 'Tambah Profil Anak '}}
+                />
+
+                <Stack.Screen
+                  name = 'ChildDetail'
+                  component = { ChildDetailScreen }
+                  options = {{ title: 'Profil Anak' }}
                 />
               </>
             )}
