@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { View, Text, Button, StyleSheet, Alert, FlatList, ActivityIndicator } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import apiClient from '../api/client';
+import { useFocusEffect } from '@react-navigation/native';
 
 // Mendefiniskan tipe data untuk child
 type Child = {
@@ -33,10 +34,14 @@ const DashboardScreen = ({ navigation }: { navigation: any }) => {
         }
     }
 
-    // Mengambil daftar anak saat pertama kali screen dibuka
-    useEffect(() => {
-        fetchChildren();
-    }, [] );
+    // Mengambil daftar anak setiap kali Dashboard Screen menjadi fokus
+    useFocusEffect(
+        React.useCallback(() => {
+            console.log('Dashboard screen is getting focus, fetching children data ... ');
+            setLoading(true);
+            fetchChildren();
+        }, [])
+    );
 
     // Fungsi handle logout
     const handleLogout = async () => {
@@ -44,7 +49,11 @@ const DashboardScreen = ({ navigation }: { navigation: any }) => {
         // Menghapus auth token dari async storage
         await AsyncStorage.removeItem('authToken');
 
+        // Menampilkan informasi telah logout
         Alert.alert('Logout', 'Anda telah berhasil logout.');
+
+        // Redirect ke Login Screen
+        navigation.navigate('Login');
 
     }
 
@@ -69,7 +78,7 @@ const DashboardScreen = ({ navigation }: { navigation: any }) => {
 
             <Button 
                 title="Tambah Anak"
-                onPress={() => {}} /* Navigasi ke screen tambah anak akan ditambahkan nanti */
+                onPress={() => navigation.navigate('AddChild')}
             />
             <Button 
                 title = 'Logout' 
