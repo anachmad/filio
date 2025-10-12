@@ -3,6 +3,7 @@ import { View, Text, Button, StyleSheet, Alert, FlatList, ActivityIndicator, Tou
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import apiClient from '../api/client';
 import { useFocusEffect } from '@react-navigation/native';
+import { useAuth } from '../context/AuthContext';
 
 // Mendefiniskan tipe data untuk child
 type Child = {
@@ -15,6 +16,7 @@ const DashboardScreen = ({ navigation }: { navigation: any }) => {
 
     const [children, setChildren] = useState<Child[]>([]);
     const [loading, setLoading] = useState(true);
+    const { signOut } = useAuth();
 
     // Fungsi mengambil daftar anak
     const fetchChildren = async () => {
@@ -46,15 +48,11 @@ const DashboardScreen = ({ navigation }: { navigation: any }) => {
     // Fungsi handle logout
     const handleLogout = async () => {
 
-        // Menghapus auth token dari async storage
-        await AsyncStorage.removeItem('authToken');
-
+        // Menggunakan fungsi signOut dari AuthContext
+        await signOut(); 
+        
         // Menampilkan informasi telah logout
         Alert.alert('Logout', 'Anda telah berhasil logout.');
-
-        // Redirect ke Login Screen
-        navigation.navigate('Login');
-
     }
 
     if(loading) {

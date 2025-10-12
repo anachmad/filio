@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity, Alert} from 'react-native';
 import apiClient from '../api/client';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useAuth } from '../context/AuthContext';
 
 const LoginScreen = ({ navigation }: { navigation: any }) => {
-    
+    // Menggunakan context Auth untuk mendapatkan fungsi signIn
+    // dan state yang diperlukan untuk login
+    const { signIn } = useAuth();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
@@ -19,6 +21,7 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
 
         // Memulai loading
         setLoading(true);
+
         try {
             // Mengirim request ke backend server
             const response = await apiClient.post('auth/login', {
@@ -27,14 +30,7 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
             });
 
             // Mengambil token dari response API
-            const token = response.data.token;
-            
-            // Menyimpan token ke asyncstorage
-            await AsyncStorage.setItem('authToken', token);
-            
-            // Mengirim notifikasi pada layar dan navigasi ke dasboard screen
-            Alert.alert('Sukses', 'Anda telah berhasil login!');
-            navigation.navigate('Dashboard');
+            await signIn(response.data.token);
 
         } catch(error: any) {
             // Menampilkan pesan error dari server

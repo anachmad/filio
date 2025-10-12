@@ -2,14 +2,18 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert, TouchableOpacity} from 'react-native';
 import apiClient from '../api/client';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useAuth } from '../context/AuthContext';
 
+// Komponen RegisterScreen untuk menangani pendaftaran user baru
+// Menggunakan useState untuk mengelola state input form
+// Menggunakan apiClient untuk berkomunikasi dengan backend server
 const RegisterScreen = ({ navigation }: { navigation: any }) => {
 
     const [fullName, setFullName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
-
+    const { signIn } = useAuth();
 
     const handleRegister = async () => {
         // Memvalidasi input
@@ -28,12 +32,9 @@ const RegisterScreen = ({ navigation }: { navigation: any }) => {
                 password,
             });
 
-            // Mengambil data auth token dan menyimpan pada async storage
-            const token = response.data.token;
-            await AsyncStorage.setItem('authToken', token);
+            await signIn(response.data.token);
 
             Alert.alert('Register sukses', `Nama Lengkap : ${fullName}, Email : ${email}`);
-            navigation.navigate('Dashboard');
 
         } catch(error: any) {
             const errorMessage = error.response?.data?.message || 'Terjadi kesalahan jaringan.';
