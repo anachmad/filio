@@ -9,6 +9,7 @@ import DashboardScreen from './src/screens/DashboardScreen';
 import AuthLoadingScreen from './src/screens/AuthLoadingScreen';
 import AddChildScreen from './src/screens/AddChildScreen';
 import ChildDetailScreen from './src/screens/ChildDetailScreen';
+import AddActivityScreen from './src/screens/AddActivityScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -78,6 +79,12 @@ export default function App() {
                   name = 'ChildDetail'
                   component = { ChildDetailScreen }
                   options = {{ title: 'Profil Anak' }}
+                />
+
+                <Stack.Screen
+                  name = 'AddActivity'
+                  component = { AddActivityScreen }
+                  options = {{ title: 'Tambah Aktivitas Baru' }}
                 />
               </>
             )}
