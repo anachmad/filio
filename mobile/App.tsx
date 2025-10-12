@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AuthProvider, useAuth } from './src/context/AuthContext';
 
 import LoginScreen from './src/screens/LoginScreen';
@@ -15,7 +14,7 @@ import AddActivityScreen from './src/screens/AddActivityScreen';
 const Stack = createNativeStackNavigator();
 
 const AppNavigator = () => {
-  const { userToken, isLoading } = useAuth();
+  const { user, isLoading } = useAuth();
 
   //  Menampilkan screen Loading jika masih dalam proses loading
   if (isLoading) {
@@ -24,7 +23,7 @@ const AppNavigator = () => {
 
   return (
     <Stack.Navigator>
-      {userToken == null ? (
+      {user == null ? (
         <>
           <Stack.Screen
             name='Login'

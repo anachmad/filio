@@ -16,7 +16,7 @@ const DashboardScreen = ({ navigation }: { navigation: any }) => {
 
     const [children, setChildren] = useState<Child[]>([]);
     const [loading, setLoading] = useState(true);
-    const { signOut } = useAuth();
+    const { user, signOut } = useAuth();
 
     // Fungsi mengambil daftar anak
     const fetchChildren = async () => {
@@ -61,6 +61,7 @@ const DashboardScreen = ({ navigation }: { navigation: any }) => {
         
     return (
         <View style = {styles.container}>
+            <Text style = {styles.title}>Selamat Datang {user?.fullName}</Text>
             {
                 children.length > 0 ? (
                     <FlatList

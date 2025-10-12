@@ -7,6 +7,8 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
     // Menggunakan context Auth untuk mendapatkan fungsi signIn
     // dan state yang diperlukan untuk login
     const { signIn } = useAuth();
+
+    // State untuk menyimpan input email, password, dan loading state
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
@@ -29,9 +31,19 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
                 password: password,
             });
 
-            // Mengambil token dari response API
-            await signIn(response.data.token);
+            // Mendapatkan user dan token dari response            
+            const { user, token } = response.data;
 
+            // Mengirim data user dan token ke fungsi signIn dari AuthContext
+            // untuk menyimpan state user dan token.
+            // Fungsi signIn ini akan mengubah state user dan token di AuthContext
+            // Setiap perubahan pada state ini akan memicu AppNavigator untuk re-render
+            // dan menampilkan screen yang sesuai.
+            // Dengan begitu, user akan diarahkan ke Dashboard Screen setelah login sukses.
+            await signIn(user, token);
+
+            Alert.alert('Login Sukses', `Selamat datang kembali, ${user.fullName}!`);
+            
         } catch(error: any) {
             // Menampilkan pesan error dari server
             const errorMessage = error.response?.data?.message || 'Terjadi kesalahan pada jaringan';
@@ -39,7 +51,7 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
             console.error(error);
 
         } finally {
-            // Mengubah state Loading menjadi False setelah loading selesai
+            // Mengubah state Loading menjadi False setelah proses login selesai
             setLoading(false);
         }
 

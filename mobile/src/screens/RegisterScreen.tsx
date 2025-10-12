@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert, TouchableOpacity} from 'react-native';
 import apiClient from '../api/client';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useAuth } from '../context/AuthContext';
 
 // Komponen RegisterScreen untuk menangani pendaftaran user baru
@@ -32,7 +31,11 @@ const RegisterScreen = ({ navigation }: { navigation: any }) => {
                 password,
             });
 
-            await signIn(response.data.token);
+            const { user, token } = response.data;
+
+            // Mengirim data user dan token ke fungsi signIn dari AuthContext
+            // untuk menyimpan state user dan token
+            await signIn(user, token);
 
             Alert.alert('Register sukses', `Nama Lengkap : ${fullName}, Email : ${email}`);
 
