@@ -65,7 +65,7 @@ model Activity {
 }
 
 model FitrahTag {
-  id          Int         @id @default(autoincrement())
+  id          String      @id
   name        String      @unique
   activities  Activity[]
 
