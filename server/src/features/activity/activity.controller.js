@@ -1,7 +1,7 @@
 import prisma from '../../lib/prisma.js';
 import { v7 as uuidv7 } from 'uuid';
 
-export const getAllActivities = async (req, res) => {
+export const createActivity = async (req, res) => {
     const { title, description, childId, fitrahTagIds } = req.body;
 
     if (!title || !childId || !fitrahTagIds || fitrahTagIds.length === 0) {

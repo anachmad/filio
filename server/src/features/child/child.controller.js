@@ -1,4 +1,5 @@
 import prisma from "../../lib/prisma.js";
+import { v7 as uuidv7 } from 'uuid';
 
 // Fungsi membuat data anak baru
 export const createChild = async (req, res) => {
@@ -6,7 +7,7 @@ export const createChild = async (req, res) => {
     const userId = req.user.userId;
 
     // Memvalidasi input nama dan tanggal lahir
-    if(!name || !dateofBirth) {
+    if(!name || !dateOfBirth) {
         return res.status(400).json({
             message: 'Nama atau Tanggal Lahir belum diisi.'
         });
@@ -39,6 +40,7 @@ export const createChild = async (req, res) => {
                 name: name,
                 dateOfBirth: new Date(dateOfBirth),
                 familyId: family.id,
+                id: uuidv7(),
             },
         });
 

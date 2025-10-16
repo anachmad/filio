@@ -88,7 +88,7 @@ export const loginUser = async (req, res) => {
             });
         }
 
-        // Jika berhasil, buat token JWT
+        // Jika berhasil, buat token JWT berdasarkan user ID
         const token = jwt.sign(
             { userId : user.id },
             process.env.JWT_SECRET,
