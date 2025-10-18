@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, Button, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import { FITRAH_CATEGORIES, Fitrah } from '../constants/fitrah';
+import apiClient from '../api/client';
 
 const AddActivityScreen = ({ route, navigation }: { route: any, navigation: any }) => {
     const { childId, childName } = route.params;
@@ -22,13 +23,27 @@ const AddActivityScreen = ({ route, navigation }: { route: any, navigation: any 
             return;
         }
 
-        // Menampilkan data yang diinput, untuk sementara sebelum implementasi API
-        Alert.alert(
-            'Data Aktivitas',
-            `Judul ${title}\nDeskripsi : ${description}\nFitrah : ${selectedFitrahs.join(', ')}`
-        );
+        setLoading(true);
 
-        navigation.goBack();
+        try {
+            const response = await apiClient.post('/activities', {
+                childId,
+                title,
+                description,
+                fitrahIds: selectedFitrahs,
+            });
+
+            if (response.status === 201) {
+                Alert.alert('Sukses', 'Aktivitas berhasil disimpan!');
+                navigation.goBack();
+            } 
+        } catch (error) {
+            Alert.alert('Error', 'Gagal menyimpan data aktivitas. Silakan coba lagi.');
+            console.error('Gagal menyimpan data aktivitas:', error);
+        } finally {
+            setLoading(false);
+        }
+
     };
 
     return(
