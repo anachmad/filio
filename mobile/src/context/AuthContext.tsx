@@ -44,12 +44,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }, []);
 
     const signIn = async (userData: User, token: string) => {
+         
+        apiClient.defaults.headers.common['Authorization'] = `Bearer ${token}`;    
         
-            setUser(userData);
-            await AsyncStorage.setItem('authToken', token); 
-            await AsyncStorage.setItem('user', JSON.stringify(userData));
-            apiClient.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-            console.log('User signed in:', userData);
+        await AsyncStorage.setItem('authToken', token); 
+        await AsyncStorage.setItem('user', JSON.stringify(userData));
+
+        setUser(userData);    
+
+        console.log('User signed in:', userData);
 
     };
 
