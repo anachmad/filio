@@ -7,8 +7,8 @@ const router = express.Router();
 router.use(authMiddleware);
 
 // Routes for activity
-// router.get('/', activityController.getAllActivities);
 router.post('/', activityController.createActivity);
+router.get('/child/:childId', activityController.getActivitiesByChildId);
 // router.get('/:id', activityController.getActivityById);
 // router.put('/:id', activityController.updateActivity);
 // router.delete('/:id', activityController.deleteActivity);
