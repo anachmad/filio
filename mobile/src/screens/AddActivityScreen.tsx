@@ -30,7 +30,7 @@ const AddActivityScreen = ({ route, navigation }: { route: any, navigation: any 
                 childId,
                 title,
                 description,
-                fitrahIds: selectedFitrahs,
+                fitrahTagIds: selectedFitrahs,
             });
 
             if (response.status === 201) {
@@ -104,8 +104,6 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 20,
         backgroundColor: '#fff',
-        justifyContent: 'center',
-        alignItems: 'center',
     },
     header: {
         fontSize: 22,
@@ -135,7 +133,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         flexWrap: 'wrap',
         marginBottom: 20,
-        justifyContent: 'space-between',  
     },
     fitrahChip: {
         paddingVertical: 8,
