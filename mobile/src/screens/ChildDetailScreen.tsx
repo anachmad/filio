@@ -2,6 +2,7 @@ import React, { act, use, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Button, FlatList, ActivityIndicator} from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import apiClient from '../api/client';
+import ActivityCard from '../components/ActivityCard';
 
 type FitrahTag = {
     name: string;
@@ -46,18 +47,7 @@ const ChildDetailScreen = ({ route, navigation }: {route: any; navigation: any})
     );
 
     const renderActivityItem = ({ item }: { item: Activity }) => (
-        <View style = { styles.activityCard }>
-            <Text style = { styles.activityTitle }>{item.title}</Text>
-            { item.description && <Text style = { styles.activityDescription }>{item.description}</Text>}
-            <Text style = { styles.activityDate }>{item.activityDate}</Text>
-            <View style = { styles.tagContainer }>
-                {item.fitrahTags.map((tag) => (
-                    <View key={tag.name} style = { styles.tagChip }>
-                        <Text style={styles.tagText}>{tag.name}</Text>
-                    </View>
-                ))}
-            </View>
-        </View>
+        <ActivityCard activity={item} />
     );
 
     return(
@@ -108,48 +98,6 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginTop: 20,
         marginBottom: 10,
-    },
-    activityCard: {
-        backgroundColor: '#f9f9f9',
-        padding: 15,
-        borderRadius: 10,
-        marginBottom: 10,
-        elevation: 2,
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.2,
-        shadowRadius: 1.41, // Untuk iOS
-        shadowColor: '#000', // Untuk iOS
-    },
-    activityTitle: {
-        fontSize: 18,
-        fontWeight: 'bold',
-    },
-    activityDescription: {
-        fontSize: 14,
-        color: '#333',
-        marginTop: 5,   
-    },
-    activityDate: {
-        fontSize: 12,
-        color: '#666',
-        marginTop: 5,
-    },
-    tagContainer: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        marginTop: 10,
-    },
-    tagChip: {
-        backgroundColor: '#e0e0e0',
-        paddingVertical: 5,
-        paddingHorizontal: 10,
-        borderRadius: 20,
-        marginRight: 5,
-        marginBottom: 5,
-    },
-    tagText: {
-        fontSize: 12,
-        color: '#333',
     },
     list: {
         flex: 1,
