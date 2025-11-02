@@ -1,8 +1,18 @@
 import axios from 'axios';
 import { Alert } from 'react-native';
 
+const DEV_BASE_URL = 'http://192.168.0.3:3000/api';
+const PROD_BASE_URL = 'https://filio-backend-909558761445.asia-southeast1.run.app/api';
+
+const isDevelopment = __DEV__;
+
+const baseURL = isDevelopment ? DEV_BASE_URL : PROD_BASE_URL;
+
+console.log(`API client initialized for ${isDevelopment ? 'DEVELOPMENT' : 'PRODUCTION'}`);
+console.log(`Connecting to: ${baseURL}`);
+
 const apiClient = axios.create({
-    baseURL: 'http://192.168.0.3:3000/api',
+    baseURL: baseURL,
 });
 
 // Interceptor to handle responses
