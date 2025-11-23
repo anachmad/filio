@@ -7,12 +7,12 @@ import jwt from 'jsonwebtoken';
 export const registerUser = async (req, res) => {    
     try {
         // Ambil data dari req body
-        const {fullName, email, password} = req.body;
+        const {fullName, email, password, familyName} = req.body;
 
         // Validasi input jika ada data yang tidak terisi
-        if (!email || !password || !fullName){
+        if (!email || !password || !fullName || !familyName){
             return res.status(400).json({
-                message: 'Nama, email, atau password tidak lengkap'
+                message: 'Nama, nama keluarga, email, atau password belum terisi'
             });
         }
 
@@ -29,6 +29,15 @@ export const registerUser = async (req, res) => {
                 fullName : fullName,
                 email : email,
                 password : hashedPassword,
+
+                family: {
+                    create: {
+                        name: familyName,
+                    },
+                },
+            },
+            include: {
+                family: true,
             },
         });
 
@@ -46,7 +55,8 @@ export const registerUser = async (req, res) => {
             user: {
                 id : newUser.id,
                 fullName: newUser.fullName,
-                email: newUser.email
+                email: newUser.email,
+                familyName: newUser.family.name,
             },
         });
     } catch (error) {
