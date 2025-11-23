@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert, TouchableOpacity} from 'react-native';
 import apiClient from '../api/client';
 import { useAuth } from '../context/AuthContext';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 // Komponen RegisterScreen untuk menangani pendaftaran user baru
 // Menggunakan useState untuk mengelola state input form
@@ -11,12 +12,15 @@ const RegisterScreen = ({ navigation }: { navigation: any }) => {
     const [fullName, setFullName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [familyName, setFamilyName] = useState('');
     const [loading, setLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+
     const { signIn } = useAuth();
 
     const handleRegister = async () => {
         // Memvalidasi input
-        if (!fullName || !email || !password) {
+        if (!fullName || !email || !password || !familyName) {
             Alert.alert('Error', 'Semua field harus terisi.');
             return;
         }
@@ -29,6 +33,7 @@ const RegisterScreen = ({ navigation }: { navigation: any }) => {
                 fullName,
                 email,
                 password,
+                familyName
             });
 
             const { user, token } = response.data;
@@ -54,6 +59,10 @@ const RegisterScreen = ({ navigation }: { navigation: any }) => {
         navigation.navigate('Login');
     };
 
+    const toogleShowPassword = () => {
+        setShowPassword(!showPassword);
+    }
+
     return (
         <View style = {styles.container}>
             <Text style={styles.title}>Buat Akun Baru</Text>
@@ -68,6 +77,14 @@ const RegisterScreen = ({ navigation }: { navigation: any }) => {
 
             <TextInput 
                 style = {styles.input}
+                placeholder = 'Nama Keluarga'
+                value = {familyName}
+                onChangeText = {setFamilyName}
+                autoCapitalize = 'words' 
+            />
+
+            <TextInput 
+                style = {styles.input}
                 placeholder = 'Email'
                 value = {email}
                 onChangeText = {setEmail}
@@ -75,13 +92,23 @@ const RegisterScreen = ({ navigation }: { navigation: any }) => {
                 autoCapitalize = 'none' 
             />
 
-            <TextInput 
-                style = {styles.input}
-                placeholder = 'Password'
-                value = {password}
-                onChangeText = {setPassword}
-                secureTextEntry
-            />
+            <View style = {styles.passwordContainer}>
+                <TextInput 
+                    style = {styles.inputPassword}
+                    placeholder = 'Password'
+                    value = {password}
+                    onChangeText = {setPassword}
+                    secureTextEntry = {!showPassword}
+                />
+
+                <MaterialCommunityIcons
+                    style = {styles.icon}
+                    name = {showPassword ? 'eye-off' : 'eye'}
+                    size = {25}
+                    onPress = {toogleShowPassword}
+                />
+
+            </View>
 
             <Button 
                 title = { loading ? 'Mendaftar ...' : 'Register' }
@@ -99,6 +126,7 @@ const RegisterScreen = ({ navigation }: { navigation: any }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        flexDirection: 'column',
         justifyContent: 'center',
         padding: 16,
     },
@@ -121,6 +149,24 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginTop: 16,
     },
+    passwordContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    icon: {
+        marginLeft: 10,
+        flex: 0.1,
+    },
+    inputPassword: {
+        height: 40,
+        borderColor: 'grey',
+        borderWidth: 1,
+        borderRadius: 8,
+        marginBottom: 12,
+        paddingHorizontal: 8,
+        flex: 0.9,
+    }
 });
 
 export default RegisterScreen;
