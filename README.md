@@ -42,3 +42,4 @@ npx expo start
 
 - **Backend**: Node.js, Express, Prisma, PostgreSQL, JWT.
 - **Frontend**: React Native, Expo, React Navigation, Axios.
+- [Dokumentasi Proyek](./docs/00-governance/charter.md) - Charter, tata kelola, dan dokumen engineering.
