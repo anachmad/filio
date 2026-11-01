@@ -13,7 +13,7 @@ Orang tua yang ingin mendampingi tumbuh kembang anak secara holistik kesulitan m
 
 ### Gambaran produk
 
-Filio adalah aplikasi iOS/Android (React Native/Expo dengan backend Express, PostgreSQL dan Prisma) yang membantu orang tua mencatat aktivitas anak dan menghubungkannya dengan 8 fitrah. Posisi yang diusulkan: pendamping pengasuhan reflektif berbasis aktivitas keluarga, bukan alat ukur klinis kemampuan atau kualitas anak. Status implementasi pada dokumen awal belum diverifikasi secara teknis.
+Filio adalah aplikasi web progresif (PWA; keputusan 2026-11-01, lihat `docs/02-architecture/decisions.md`) yang membantu orang tua mencatat aktivitas anak dan menghubungkannya dengan 8 fitrah. Posisi yang diusulkan: pendamping pengasuhan reflektif berbasis aktivitas keluarga, bukan alat ukur klinis kemampuan atau kualitas anak. Status implementasi pada dokumen awal belum diverifikasi secara teknis. Backend Express, PostgreSQL dan Prisma berjalan di VPS dengan Docker (keputusan 2026-11-01). PRD v2.0 masih menyebut aplikasi iOS/Android (React Native/Expo) dan perlu diamandemen.
 
 ### Tujuan
 
@@ -56,7 +56,7 @@ Risiko lengkap ada di BRD bagian 10. Yang kritis atau tinggi: kebocoran data sen
 
 ### Profil proyek
 
-Profil: business-critical (dipilih karena data anak bersifat sensitif; konfirmasi persetujuan formal: TBD, lihat `approvals.md` di repo privat `filio-internal`). UI ada (aplikasi mobile).
+Profil: business-critical (dipilih karena data anak bersifat sensitif; konfirmasi persetujuan formal: TBD, lihat `approvals.md` di repo privat `filio-internal`). UI ada (PWA).
 
 ## Project owner, stakeholders, decisions and approvals
 
