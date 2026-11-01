@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "name": "Filio",
-  "profile": "standard",
-  "ui": "unknown",
+  "profile": "business-critical",
+  "ui": "yes",
   "standards_path": ".engineering/toolkit/standards",
   "status": "draft"
 }
